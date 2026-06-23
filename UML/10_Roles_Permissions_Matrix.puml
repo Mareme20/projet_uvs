@@ -1,0 +1,62 @@
+@startuml Roles_Permissions_Matrix
+title Matrice des Rôles et Permissions
+
+package "Permissions par Rôle" {
+    
+    card "👤 Patient" as PatientCard {
+        :✅ Créer RV (propres)
+        :✅ Consulter RV (propres)
+        :✅ Annuler RV (propres)
+        :✅ Imprimer Ordonnance
+        :✅ Consulter Résultats
+        :✅ Voir Historique (propre)
+        :❌ Valider RV
+        :❌ Modifier RV autres
+    }
+    
+    card "👨‍⚕️ Médecin" as DoctorCard {
+        :✅ Compléter Consultation
+        :✅ Prescrire Médicaments
+        :✅ Voir Antécédents Patient
+        :✅ Voir Historique Patient
+        :✅ Gérer Disponibilités
+        :✅ Annuler Consultation
+        :❌ Valider RV
+        :❌ Ajouter Résultats Prestation
+        :❌ Voir Statistiques
+    }
+    
+    card "📋 Secrétaire" as SecretaryCard {
+        :✅ Valider tous RV
+        :✅ Annuler tous RV
+        :✅ Gérer Validations
+        :✅ Voir Statistiques
+        :✅ Consulter tous RV
+        :✅ Imprimer Ordonnance
+        :✅ Archiver Dossiers
+        :❌ Compléter Consultation
+        :❌ Ajouter Résultats
+    }
+    
+    card "📊 Resp. Prestation" as ManagerCard {
+        :✅ Ajouter Résultats Prestation
+        :✅ Compléter Prestations
+        :✅ Gérer Type Prestations
+        :✅ Voir Statistiques
+        :✅ Annuler Prestation
+        :✅ Imprimer Résultats
+        :❌ Valider RV
+        :❌ Compléter Consultation
+        :❌ Prescrire Médicaments
+    }
+}
+
+' Légende
+legend
+|<#FF9999> Patient |
+|<#99CC99> Médecin |
+|<#99CCFF> Secrétaire |
+|<#FFCC99> Responsable Prestation |
+endlegend
+
+@enduml

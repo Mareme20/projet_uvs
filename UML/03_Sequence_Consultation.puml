@@ -1,0 +1,36 @@
+@startuml Sequence_Consultation_Flow
+title Diagramme de Séquence - Flux de Consultation
+
+actor Patient
+participant Système
+participant Secrétaire
+participant Médecin
+participant Email
+
+== Phase 1: Création du RV ==
+Patient -> Système: 1. Créer RV (en_attente)
+Système -> Système: 2. RV créé avec statut=en_attente
+
+== Phase 2: Validation ==
+Secrétaire -> Système: 3. Voir RV en attente
+Secrétaire -> Système: 4. Valider RV
+Système -> Système: 5. Créer Consultation
+Système -> Système: 6. Mettre statut=valide
+
+== Phase 3: Complétation ==
+Médecin -> Système: 7. Accéder à la consultation
+Médecin -> Système: 8. Ajouter constantes vitales\n(Tension, Température, FR, FC)
+Médecin -> Système: 9. Prescrire médicaments
+Médecin -> Système: 10. Mettre à jour antécédents
+Médecin -> Système: 11. Compléter consultation
+Système -> Système: 12. Mettre statut=effectue
+
+== Phase 4: Notification ==
+Système -> Email: 13. Envoyer notification\nConsultationCompleted
+Email -> Patient: 14. Notification: Consultation complétée
+
+== Phase 5: Impression ==
+Patient -> Système: 15. Consulter ordonnance
+Patient -> Système: 16. Imprimer ordonnance
+
+@enduml

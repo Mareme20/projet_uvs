@@ -1,0 +1,182 @@
+@startuml Class_Diagram
+title Diagramme de Classes - Système de Gestion des Rendez-vous Médicaux
+
+class User {
+    -id: Long
+    -name: String
+    -email: String
+    -password: String
+    -roles: Array
+    -permissions: Array
+    --
+    +getPatient(): Patient
+    +getMedecin(): Medecin
+    +hasRole(role: String): Boolean
+    +hasPermission(permission: String): Boolean
+    +authenticate(): Boolean
+    +logout(): void
+}
+
+class Patient {
+    -id: Long
+    -user_id: Long
+    -code: String
+    -nom: String
+    -prenom: String
+    -antecedents: JSON
+    -created_at: DateTime
+    --
+    +getUser(): User
+    +createRendezVous(date, type): RendezVous
+    +getRendezVous(): List<RendezVous>
+    +getRendezVousById(id): RendezVous
+    +cancelRendezVous(id): Boolean
+    +getConsultations(): List<Consultation>
+    +getPrestations(): List<Prestation>
+    +updateAntecedents(antecedents): void
+    +getHistorique(): List<Consultation>
+}
+
+class Medecin {
+    -id: Long
+    -user_id: Long
+    -specialite: String
+    -disponible: Boolean
+    -horaires: JSON
+    -created_at: DateTime
+    --
+    +getUser(): User
+    +getRendezVous(): List<RendezVous>
+    +getConsultationsEnAttente(): List<Consultation>
+    +completeConsultation(consultation): void
+    +addConstantes(consultation, constantes): void
+    +prescribeMedicament(consultation, medicament): void
+    +updateAntecedents(patient, antecedents): void
+    +setDisponibilite(disponible): void
+    +cancelConsultation(id): Boolean
+}
+
+class RendezVous {
+    -id: Long
+    -patient_id: Long
+    -medecin_id: Long
+    -type: String {consultation, prestation}
+    -prestation_type: String
+    -date_rv: DateTime
+    -statut: String {en_attente, valide, effectue, annule}
+    -created_at: DateTime
+    --
+    +getPatient(): Patient
+    +getMedecin(): Medecin
+    +getConsultation(): Consultation
+    +getPrestation(): Prestation
+    +validate(): void
+    +complete(): void
+    +cancel(motif): Boolean
+    +updateStatut(statut): void
+    +canBeCanceled(): Boolean
+    +isEffectue(): Boolean
+}
+
+class Consultation {
+    -id: Long
+    -rendez_vous_id: Long
+    -patient_id: Long
+    -medecin_id: Long
+    -constantes: JSON {tension, temperature, fc, fr}
+    -notes: String
+    -date_consultation: DateTime
+    -created_at: DateTime
+    --
+    +getRendezVous(): RendezVous
+    +getPatient(): Patient
+    +getMedecin(): Medecin
+    +getOrdonnance(): Ordonnance
+    +addConstantes(constantes): void
+    +addNotes(notes): void
+    +createOrdonnance(): Ordonnance
+    +complete(): void
+    +cancel(): Boolean
+    +getPrescriptions(): List<Medicament>
+}
+
+class Ordonnance {
+    -id: Long
+    -consultation_id: Long
+    -date_emission: DateTime
+    -created_at: DateTime
+    --
+    +getConsultation(): Consultation
+    +getMedicaments(): List<Medicament>
+    +addMedicament(medicament, posologie): void
+    +removeMedicament(medicament): void
+    +updatePosologie(medicament, posologie): void
+    +getPDF(): String
+    +print(): void
+    +getMedicamentsWithPosologie(): List<Object>
+}
+
+class Medicament {
+    -id: Long
+    -code: String
+    -nom: String
+    -description: String
+    -prix: Decimal
+    -created_at: DateTime
+    --
+    +getOrdonnances(): List<Ordonnance>
+    +getPosologiePar(ordonnance): String
+    +isActive(): Boolean
+}
+
+class OrdonnanceMedicament {
+    -id: Long
+    -ordonnance_id: Long
+    -medicament_id: Long
+    -posologie: String
+    -dose: Integer
+    -frequence: String
+    -duree: String
+    -created_at: DateTime
+    --
+    +getOrdonnance(): Ordonnance
+    +getMedicament(): Medicament
+    +updatePosologie(posologie): void
+}
+
+class Prestation {
+    -id: Long
+    -rendez_vous_id: Long
+    -patient_id: Long
+    -type: String {analyse, echographie, radio, etc}
+    -date_prestation: DateTime
+    -statut: String {en_attente, valide, effectue, annule}
+    -resultats: JSON
+    -created_at: DateTime
+    --
+    +getRendezVous(): RendezVous
+    +getPatient(): Patient
+    +getResultats(): JSON
+    +addResultats(resultats): void
+    +complete(): void
+    +cancel(): Boolean
+    +updateStatut(statut): void
+    +getPDF(): String
+    +print(): void
+}
+
+' Relationships
+User "1" --> "1" Patient
+User "1" --> "1" Medecin
+Patient "1" --> "*" RendezVous : crée
+Patient "1" --> "*" Consultation : a
+Patient "1" --> "*" Prestation : demande
+Medecin "1" --> "*" RendezVous : traite
+Medecin "1" --> "*" Consultation : effectue
+RendezVous "1" --> "1" Consultation : contient
+RendezVous "1" --> "1" Prestation : contient
+Consultation "1" --> "1" Ordonnance : génère
+Ordonnance "*" --> "*" Medicament : contient
+Ordonnance "1" --> "*" OrdonnanceMedicament : via
+
+@enduml

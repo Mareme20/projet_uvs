@@ -1,0 +1,56 @@
+@startuml Interaction_Diagram
+title Diagramme d'Interaction - Flux Principal du Système
+
+actor Patient as p
+participant "RendezVous\n(en_attente)" as rv1
+participant Secrétaire as sec
+participant "RendezVous\n(valide)" as rv2
+
+participant "Médecin" as doc
+participant "Consultation" as cons
+participant "Ordonnance" as ord
+participant Medicament as med
+
+participant "Resp. Prestation" as mgr
+participant "Prestation" as prest
+
+participant "Notification" as notif
+
+== Création ==
+p -> rv1: Crée RV\n(type: consultation/prestation)
+
+== Validation ==
+sec -> rv1: Récupère RV en attente
+sec -> rv2: Valide RV
+
+== Branchement selon type ==
+alt type = consultation
+    rv2 -> cons: Crée Consultation
+    cons -> cons: Statut: valide
+    
+    doc -> cons: Accède Consultation
+    doc -> cons: Ajoute Constantes Vitales
+    doc -> ord: Prescrit Médicaments
+    ord -> med: Contient Médicaments
+    doc -> cons: Complète Consultation
+    cons -> cons: Statut: effectue
+    
+else type = prestation
+    rv2 -> prest: Crée Prestation
+    prest -> prest: Statut: valide
+    
+    mgr -> prest: Accède Prestation
+    mgr -> prest: Ajoute Résultats
+    prest -> prest: Statut: effectue
+end
+
+== Notification ==
+cons -> notif: Déclenche ConsultationCompleted
+prest -> notif: Déclenche PrestationResultReady
+notif -> p: Envoie Notification
+
+== Impression ==
+p -> cons: Consulte Ordonnance\n(si consultation)
+p -> prest: Consulte Résultats\n(si prestation)
+
+@enduml

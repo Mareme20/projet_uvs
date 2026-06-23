@@ -1,0 +1,46 @@
+@startuml Deployment_Diagram
+title Diagramme de Déploiement - Infrastructure du Système
+
+cloud "Internet" as internet
+
+node "Navigateur Client" as browser {
+    component "Application Web" as webapp
+}
+
+node "Serveur Web" as server {
+    component "Laravel Application" as laravel
+    component "Artisan CLI" as artisan
+    component "Vite Build Tool" as vite
+}
+
+node "Base de Données" as dbNode {
+    database "MySQL/PostgreSQL" as db
+}
+
+node "Service Email" as emailNode {
+    component "SMTP Service" as smtp
+    component "SendGrid" as sendgrid
+}
+
+node "Stockage Fichiers" as storage {
+    component "Local Storage" as localStorage
+    component "Public Files" as publicFiles
+}
+
+internet -- browser
+browser -- server : HTTP/AJAX
+
+laravel -- db : SQL
+laravel -- smtp : SMTP
+laravel -- sendgrid : API
+laravel -- localStorage : Fichiers
+laravel -- publicFiles : Assets
+vite -- webapp : Build
+artisan -- laravel : Commands
+
+artifact "GitHub Repository" as git {
+}
+
+git -- server : Git Pull/Deployment
+
+@enduml

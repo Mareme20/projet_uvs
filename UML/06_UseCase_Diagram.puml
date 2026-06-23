@@ -1,0 +1,54 @@
+@startuml UseCase_Diagram
+title Diagramme de Cas d'Usage - Système de Gestion des Rendez-vous
+
+left to right direction
+
+actor Patient
+actor Médecin
+actor Secrétaire
+actor "Resp. Prestation" as Manager
+
+rectangle "Système de Gestion RV" {
+    usecase UC1 as "Créer Rendez-vous"
+    usecase UC2 as "Annuler Rendez-vous"
+    usecase UC3 as "Valider Rendez-vous"
+    usecase UC4 as "Compléter Consultation"
+    usecase UC5 as "Prescrire Médicaments"
+    usecase UC6 as "Ajouter Résultats"
+    usecase UC7 as "Consulter Ordonnance"
+    usecase UC8 as "Imprimer Résultats"
+    usecase UC9 as "Voir Antécédents"
+    usecase UC10 as "Voir Historique Patient"
+    usecase UC11 as "Voir Statistiques"
+    usecase UC12 as "Consulter RV"
+    usecase UC13 as "Gérer Disponibilités Médecin"
+}
+
+Patient --> UC1
+Patient --> UC2
+Patient --> UC7
+Patient --> UC8
+Patient --> UC12
+Patient --> UC10
+
+Médecin --> UC3
+Médecin --> UC4
+Médecin --> UC5
+Médecin --> UC9
+Médecin --> UC10
+Médecin --> UC13
+
+Secrétaire --> UC3
+Secrétaire --> UC2
+Secrétaire --> UC11
+Secrétaire --> UC12
+
+Manager --> UC6
+Manager --> UC11
+
+UC3 ..> UC4 : inclus
+UC4 ..> UC5 : inclus
+UC3 ..> UC6 : inclus
+UC2 ..> UC3 : vérifie après
+
+@enduml

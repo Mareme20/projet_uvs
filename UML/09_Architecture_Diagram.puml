@@ -1,0 +1,80 @@
+@startuml Architecture_Diagram
+title Diagramme d'Architecture en Couches - Système de Gestion RV
+
+package "Couche Présentation" #4A90E2 {
+    component "Application Web" as Web {
+        port "HTML/CSS/JS" as http
+        port "Vue.js" as vue
+        port "Blade Templates" as blade
+    }
+}
+
+package "Couche Application" #7B68EE {
+    component "Router" as Router {
+        port "routes/web.php" as webRoutes
+        port "routes/api.php" as apiRoutes
+    }
+    
+    component "Controllers" as Controllers {
+        component PatientController
+        component DoctorController
+        component SecretaryController
+        component PrestationManagerController
+    }
+    
+    component "Models" as Models {
+        component User
+        component Patient
+        component Medecin
+        component RendezVous
+        component Consultation
+        component Ordonnance
+        component Prestation
+    }
+    
+    component "Services" as Services {
+        component NotificationService
+        component MailService
+    }
+}
+
+package "Couche Métier" #50C878 {
+    component "Business Logic" as Logic {
+        component RVValidation
+        component ConsultationLogic
+        component PrestationLogic
+    }
+}
+
+package "Couche Données" #50C878 {
+    database "Base de Données" as DB {
+        component MySQL
+        
+    }
+}
+
+package "Services Externes" #FF6B6B {
+    component "Service Email" as Email {
+        component SMTP
+        component SendGrid
+    }
+}
+
+Web --> http
+Web --> vue
+Web --> blade
+http --> Router
+Router --> webRoutes
+Router --> apiRoutes
+Router --> Controllers
+
+Controllers --> Models
+Controllers --> Services
+Models --> Logic
+Logic --> DB
+
+Services --> Email
+Email --> SMTP
+Email --> SendGrid
+
+@enduml

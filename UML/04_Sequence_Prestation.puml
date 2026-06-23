@@ -1,0 +1,35 @@
+@startuml Sequence_Prestation_Flow
+title Diagramme de Séquence - Flux de Prestation
+
+actor Patient
+participant Système
+participant Secrétaire
+participant "Resp. Prestation" as Manager
+participant Email
+
+== Phase 1: Création du RV ==
+Patient -> Système: 1. Créer RV (type=prestation)
+Système -> Système: 2. RV créé avec statut=en_attente
+
+== Phase 2: Validation ==
+Secrétaire -> Système: 3. Voir RV prestation
+Secrétaire -> Système: 4. Valider RV
+Système -> Système: 5. Créer Prestation
+Système -> Système: 6. Mettre statut=valide
+
+== Phase 3: Exécution ==
+Manager -> Système: 7. Voir prestations en attente
+Manager -> Système: 8. Accéder à la prestation
+Manager -> Système: 9. Ajouter résultats\n(Analyses, Tests, etc.)
+Manager -> Système: 10. Compléter prestation
+Système -> Système: 11. Mettre statut=effectue
+
+== Phase 4: Notification ==
+Système -> Email: 12. Envoyer notification\nPrestationResultReady
+Email -> Patient: 13. Notification: Résultats disponibles
+
+== Phase 5: Consultation ==
+Patient -> Système: 14. Consulter résultats
+Patient -> Système: 15. Imprimer résultats
+
+@enduml

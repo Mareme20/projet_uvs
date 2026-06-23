@@ -1,0 +1,27 @@
+@startuml Context_Diagram
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+title Diagramme de Contexte - Système de Gestion des Rendez-vous Médicaux
+
+Person(patient, "Patient", "Crée et gère ses rendez-vous")
+Person(doctor, "Médecin", "Complète les consultations et prescrit des médicaments")
+Person(secretary, "Secrétaire", "Valide et gère les rendez-vous")
+Person(manager, "Responsable Prestation", "Gère les prestations et ajoute les résultats")
+
+System(system, "Système de Gestion RV", "Plateforme web de gestion des rendez-vous médicaux en ligne")
+
+System_Ext(email, "Service Email", "Envoie les notifications aux utilisateurs")
+System_Ext(database, "Base de Données", "Stocke toutes les données du système")
+
+Rel(patient, system, "Crée RV, Annule RV, Consulte résultats")
+Rel(doctor, system, "Complète consultation, Prescrit médicaments, Annule consultation")
+Rel(secretary, system, "Valide RV, Gérer RV, Voir statistiques")
+Rel(manager, system, "Ajoute résultats, Gère prestations, Voir statistiques")
+
+Rel(system, email, "Envoie notifications")
+Rel(system, database, "Lire/Écrire données")
+Rel(email, patient, "Notifie patient")
+Rel(email, doctor, "Notifie médecin")
+
+SHOW_LEGEND()
+@enduml

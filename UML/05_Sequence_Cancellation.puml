@@ -1,0 +1,31 @@
+@startuml Sequence_Cancellation_Flow
+title Diagramme de Séquence - Flux d'Annulation
+
+actor Patient
+participant Système
+
+== Demande d'Annulation ==
+Patient -> Système: 1. Demander annulation RV
+
+== Vérifications ==
+Système -> Système: 2. Vérifier statut\n(en_attente ou valide?)
+Système -> Système: 3. Vérifier délai\n(>48h avant date?)
+
+== Résolution ==
+alt Conditions non respectées
+    Système --> Patient: Erreur: Annulation impossible\n(Raison du refus)
+else Conditions respectées
+    Système -> Système: 4. Marquer RV=annule
+    
+    alt RV avait une Consultation
+        Système -> Système: 5a. Supprimer Consultation
+        Système -> Système: 5b. Supprimer Ordonnance associée
+    else RV avait une Prestation
+        Système -> Système: 5c. Supprimer Prestation
+    end
+    
+    Système -> Système: 6. Enregistrer motif d'annulation
+    Système --> Patient: Annulation confirmée
+end
+
+@enduml

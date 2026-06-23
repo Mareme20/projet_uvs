@@ -1,0 +1,46 @@
+@startuml Activity_Consultation_Flow
+title Diagramme d'Activité - Flux Détaillé d'une Consultation
+
+start
+
+:Patient crée RV
+Statut: en_attente;
+
+:Secrétaire examine RV;
+
+if (RV Valide?) then (Non)
+    :Rejeter RV;
+    :Notifier Patient;
+    end
+else (Oui)
+    :Valider RV;
+    :Créer Consultation;
+    :Mettre statut=valide;
+    
+    :Médecin accède Consultation;
+    
+    :Ajouter Constantes Vitales
+    (Tension, Température, FR, FC);
+    
+    :Prescrire Médicaments;
+    
+    :Mettre à jour Antécédents;
+    
+    :Ajouter Notes Médicales;
+    
+    :Compléter Consultation;
+    :Mettre statut=effectue;
+    
+    :Envoyer Notification Patient;
+    
+    fork
+        :Patient consulte Ordonnance;
+        :Patient Imprime Ordonnance;
+    fork again
+        :Secrétaire archiver dossier;
+    end fork
+    
+    end
+end
+
+@enduml

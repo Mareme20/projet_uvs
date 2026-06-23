@@ -1,0 +1,32 @@
+@startuml State_Diagram
+title Diagramme d'État - Statut RendezVous
+
+state en_attente {
+    [*] --> en_attente : RV créé par Patient
+}
+
+state valide {
+    valide : Consultation/Prestation créée
+    valide : Secrétaire a validé RV
+}
+
+state effectue {
+    effectue : Médecin a complété consultation
+    effectue : OU Manager a ajouté résultats
+}
+
+state annule {
+    annule : RV annulé
+    annule : Consultation/Prestation supprimées
+}
+
+en_attente --> valide : Secrétaire valide RV\n[créer Consultation/Prestation]
+en_attente --> annule : Annulation\n[>48h avant date]
+
+valide --> effectue : Médecin complète consultation\nOU Manager ajoute résultats
+valide --> annule : Annulation\n[>48h avant date]
+
+effectue --> [*] : Fin (Terminal - pas d'annulation)
+annule --> [*] : Fin (Terminal)
+
+@enduml
