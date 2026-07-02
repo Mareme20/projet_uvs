@@ -16,7 +16,4 @@ npm install
 echo "Building assets..."
 npm run build
 
-echo "Running migrations..."
-php artisan migrate --force
-
 echo "Build complete!"

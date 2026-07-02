@@ -32,13 +32,16 @@ WORKDIR /app
 COPY . .
 
 # Installer les dépendances PHP
-RUN composer install --no-dev --no-scripts
+RUN composer install --no-dev --no-scripts --no-interaction --prefer-dist --optimize-autoloader
 
 # Installer les dépendances Node.js et builder les assets
 RUN npm install && npm run build
 
 # Préparer le fichier d'environnement et générer la clé d'application
-RUN cp .env.example .env && php artisan key:generate --force
+RUN rm -f bootstrap/cache/*.php \
+    && cp .env.example .env \
+    && php artisan package:discover --ansi \
+    && php artisan key:generate --force
 
 # Définir les permissions
 RUN chmod -R 755 storage bootstrap/cache

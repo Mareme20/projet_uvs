@@ -32,6 +32,32 @@ Copiez le fichier d’exemple puis configurez vos identifiants base de données 
 cp .env.example .env
 ```
 
+Si l’application tourne dans Docker avec le `docker-compose.yml` du projet, utilisez `DB_HOST=db`.
+Si elle tourne directement sur votre machine et que PostgreSQL est installé localement, utilisez `DB_HOST=127.0.0.1`.
+En déploiement, renseignez plutôt `DATABASE_URL` avec l’URL PostgreSQL fournie par l’hébergeur, ou définissez `DB_HOST` avec le hostname externe de la base.
+
+### Démarrage avec Docker
+
+```bash
+docker compose up --build
+```
+
+L’application sera disponible sur `http://127.0.0.1:10000`.
+
+### Déploiement Render
+
+Sur Render, ne mettez pas `DB_HOST=127.0.0.1`. Créez une base **Render PostgreSQL**, puis utilisez l’URL interne de la base dans la variable d’environnement :
+
+```env
+DB_CONNECTION=pgsql
+DATABASE_URL=postgresql://USER:PASSWORD@HOST:5432/DATABASE
+APP_ENV=production
+APP_DEBUG=false
+APP_KEY=base64:...
+```
+
+Render fournit aussi la variable `PORT`; le projet démarre Laravel avec ce port automatiquement. Les migrations sont lancées au démarrage, pas pendant le build, pour que la base soit joignable.
+
 ### 3) Lancer les migrations et seeders
 
 ```bash
@@ -116,4 +142,3 @@ En cas de faille de sécurité, merci de signaler le problème via les canaux re
 ## Licence
 
 Le framework **Laravel** est open-source et distribué sous licence **MIT**.
-
