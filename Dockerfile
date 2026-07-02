@@ -43,8 +43,12 @@ RUN php artisan key:generate --force
 # Définir les permissions
 RUN chmod -R 755 storage bootstrap/cache
 
+# Copier et rendre exécutable le script d'entrée
+COPY entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
 # Exposer le port
 EXPOSE 10000
 
 # Démarrer l'application
-CMD ["php", "artisan", "serve", "--host", "0.0.0.0", "--port", "10000"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
