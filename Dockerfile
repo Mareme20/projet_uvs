@@ -37,8 +37,8 @@ RUN composer install --no-dev --no-scripts
 # Installer les dépendances Node.js et builder les assets
 RUN npm install && npm run build
 
-# Générer la clé d'application
-RUN php artisan key:generate --force
+# Préparer le fichier d'environnement et générer la clé d'application
+RUN cp .env.example .env && php artisan key:generate --force
 
 # Définir les permissions
 RUN chmod -R 755 storage bootstrap/cache
