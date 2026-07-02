@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Spatie\Permission\Models\Role;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -28,6 +29,12 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
+
+        $user = Auth::user();
+        if ($user && $user->roles()->doesntExist() && $user->patient()->exists()) {
+            Role::findOrCreate('patient', 'web');
+            $user->assignRole('patient');
+        }
 
         return redirect()->intended(RouteServiceProvider::HOME);
     }

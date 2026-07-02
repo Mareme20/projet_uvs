@@ -7,6 +7,7 @@ use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\PrestationManagerController;
 use App\Http\Controllers\StatisticsController;
 use Illuminate\Support\Facades\Route;
+use Spatie\Permission\Models\Role;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,12 @@ Route::get('/', function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
         $user = auth()->user();
+        if ($user->roles()->doesntExist() && $user->patient()->exists()) {
+            Role::findOrCreate('patient', 'web');
+            $user->assignRole('patient');
+            $user->load('roles');
+        }
+
         if ($user->hasRole('patient')) {
             return redirect()->route('patient.dashboard');
         } elseif ($user->hasRole('secretaire') || $user->hasRole('medecin') || $user->hasRole('responsable_prestation')) {

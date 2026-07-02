@@ -440,9 +440,9 @@
     <!-- Carte d'inscription -->
     <div class="register-card">
         <div class="register-logo">+</div>
-        <h4 class="text-center">Créer un compte Patient</h4>
+        <h4 class="text-center">Créer un compte</h4>
         <p class="register-subtitle">
-            Rejoignez la Clinique IIBS et gérez vos rendez-vous en toute simplicité
+            Rejoignez la Clinique IIBS et accédez à votre espace selon votre rôle
         </p>
 
         <!-- Indicateur d'étape -->
@@ -499,6 +499,28 @@
                 </div>
             </div>
 
+            <!-- Rôle -->
+            <div class="form-group">
+                <label for="role">Rôle</label>
+                <div class="input-icon-wrapper">
+                    <span class="input-icon">⚕️</span>
+                    <select
+                        id="role"
+                        name="role"
+                        class="form-control @error('role') is-invalid @enderror"
+                        required
+                    >
+                        <option value="patient" {{ old('role', 'patient') === 'patient' ? 'selected' : '' }}>Patient</option>
+                        <option value="medecin" {{ old('role') === 'medecin' ? 'selected' : '' }}>Médecin</option>
+                        <option value="secretaire" {{ old('role') === 'secretaire' ? 'selected' : '' }}>Secrétaire</option>
+                        <option value="responsable_prestation" {{ old('role') === 'responsable_prestation' ? 'selected' : '' }}>Responsable prestation</option>
+                    </select>
+                </div>
+                @error('role')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
             <!-- Email -->
             <div class="form-group">
                 <label for="email">Email</label>
@@ -522,20 +544,20 @@
 
             <!-- Antécédents médicaux -->
             <div class="form-group">
-                <label>Antécédents médicaux</label>
+                <label>Antécédents médicaux patient</label>
                 <div class="antecedents-box">
                     <label class="antecedent-item" for="diabete">
-                        <input class="custom-checkbox" type="checkbox" name="antecedents[]" value="Diabète" id="diabete">
+                        <input class="custom-checkbox" type="checkbox" name="antecedents[]" value="Diabète" id="diabete" {{ in_array('Diabète', old('antecedents', [])) ? 'checked' : '' }}>
                         <span class="antecedent-label">Diabète</span>
                         <span class="antecedent-badge badge-diabete">Chronique</span>
                     </label>
                     <label class="antecedent-item" for="hypertension">
-                        <input class="custom-checkbox" type="checkbox" name="antecedents[]" value="Hypertension" id="hypertension">
+                        <input class="custom-checkbox" type="checkbox" name="antecedents[]" value="Hypertension" id="hypertension" {{ in_array('Hypertension', old('antecedents', [])) ? 'checked' : '' }}>
                         <span class="antecedent-label">Hypertension</span>
                         <span class="antecedent-badge badge-hypertension">Cardio</span>
                     </label>
                     <label class="antecedent-item" for="hepatite">
-                        <input class="custom-checkbox" type="checkbox" name="antecedents[]" value="Hépatite" id="hepatite">
+                        <input class="custom-checkbox" type="checkbox" name="antecedents[]" value="Hépatite" id="hepatite" {{ in_array('Hépatite', old('antecedents', [])) ? 'checked' : '' }}>
                         <span class="antecedent-label">Hépatite</span>
                         <span class="antecedent-badge badge-hepatite">Hépatique</span>
                     </label>
