@@ -21,7 +21,10 @@ class MedicamentSeeder extends Seeder
         ];
 
         foreach ($medicaments as $med) {
-            Medicament::create($med);
+            Medicament::updateOrCreate(
+                ['code' => $med['code']],
+                ['nom' => $med['nom']]
+            );
         }
     }
 }

@@ -14,5 +14,8 @@ fi
 echo "Running database migrations..."
 php artisan migrate --force
 
+echo "Seeding the database..."
+php artisan db:seed --force
+
 echo "Starting Laravel application..."
 php artisan serve --host 0.0.0.0 --port "${PORT:-10000}"
