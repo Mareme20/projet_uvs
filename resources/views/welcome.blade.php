@@ -637,6 +637,7 @@
             .hero-inner {
                 grid-template-columns: 1fr;
                 text-align: center;
+                gap: 32px;
             }
             .hero p {
                 margin: 0 auto 30px;
@@ -658,6 +659,96 @@
             .footer-inner {
                 grid-template-columns: 1fr;
                 text-align: center;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .nav-container {
+                padding: 12px 0;
+            }
+
+            .nav-inner {
+                padding: 0 16px;
+                gap: 12px;
+            }
+
+            .logo {
+                gap: 8px;
+                min-width: 0;
+            }
+
+            .logo-cross {
+                width: 36px;
+                height: 36px;
+                border-radius: 12px;
+                flex-shrink: 0;
+            }
+
+            .logo-text {
+                font-size: 16px;
+                white-space: nowrap;
+            }
+
+            .nav-buttons {
+                gap: 8px;
+                flex-shrink: 0;
+            }
+
+            .nav-buttons .btn {
+                padding: 9px 14px;
+                font-size: 13px;
+            }
+
+            .nav-buttons .btn-outline {
+                display: none;
+            }
+
+            .hero {
+                min-height: auto;
+                padding: 96px 18px 56px;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+                letter-spacing: 0;
+            }
+
+            .hero p {
+                font-size: 15px;
+                margin-bottom: 26px;
+            }
+
+            .hero-card {
+                padding: 32px 22px;
+                border-radius: 22px;
+            }
+
+            .hero-bg-circle-1 {
+                width: 360px;
+                height: 360px;
+                top: -170px;
+                right: -170px;
+            }
+
+            .hero-bg-circle-2 {
+                width: 280px;
+                height: 280px;
+                bottom: -120px;
+                left: -150px;
+            }
+
+            .section {
+                padding: 64px 18px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .logo-text {
+                font-size: 14px;
+            }
+
+            .nav-buttons .btn {
+                padding: 8px 11px;
             }
         }
     </style>

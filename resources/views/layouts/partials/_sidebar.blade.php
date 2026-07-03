@@ -249,6 +249,7 @@
     /* ========== RESPONSIVE ========== */
     @media (max-width: 767.98px) {
         .iibs-sidebar {
+            width: min(var(--sidebar-width), 86vw);
             transform: translateX(-100%);
         }
 
@@ -259,7 +260,7 @@
 
         .main-content {
             margin-left: 0;
-
+            padding: 16px;
         }
     }
 

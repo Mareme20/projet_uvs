@@ -9,19 +9,68 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { font-size: .875rem; }
+        * { box-sizing: border-box; }
+        html, body { max-width: 100%; overflow-x: hidden; }
+        body { font-size: .875rem; background: #F5F9FB; }
         .sidebar { position: fixed; top: 0; bottom: 0; left: 0; z-index: 100; padding: 48px 0 0; box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1); }
         .sidebar-sticky { position: relative; top: 0; height: calc(100vh - 48px); padding-top: .5rem; overflow-x: hidden; overflow-y: auto; }
         .sidebar .nav-link { font-weight: 500; color: #333; }
         .sidebar .nav-link.active { color: #007bff; }
         .navbar-brand { padding-top: .75rem; padding-bottom: .75rem; font-size: 1rem; background-color: rgba(0, 0, 0, .25); box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1); }
-        main { padding-top: 20px; }
+        .app-shell {
+            padding-left: 260px;
+            padding-top: 64px;
+            min-height: 100vh;
+        }
+        main {
+            padding-top: 20px;
+            min-width: 0;
+        }
+        img, svg, canvas, video {
+            max-width: 100%;
+        }
+        main table {
+            width: 100%;
+        }
+
+        @media (max-width: 767.98px) {
+            body { font-size: .8125rem; }
+            .app-shell {
+                padding-left: 0;
+                padding-top: 64px;
+                padding-right: 0;
+                padding-bottom: 16px;
+            }
+            .app-shell > .row {
+                --bs-gutter-x: 0;
+                margin-left: 0;
+                margin-right: 0;
+            }
+            main {
+                padding: 16px 12px 0;
+                width: 100%;
+                max-width: 100%;
+            }
+            main table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+            }
+            .page-container {
+                max-width: 100%;
+            }
+            .alert {
+                margin-left: 0;
+                margin-right: 0;
+            }
+        }
     </style>
 </head>
 <body>
     @include('layouts.partials._navbar')
 
-    <div class="container-fluid" style="padding-left: 260px; padding-top: 64px;">
+    <div class="container-fluid app-shell">
         <div class="row">
             @include('layouts.partials._sidebar')
 

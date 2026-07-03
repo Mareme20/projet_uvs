@@ -76,6 +76,7 @@
         display: flex;
         align-items: center;
         gap: 14px;
+        min-width: 0;
     }
 
     /* Toggle hamburger (mobile) */
@@ -111,6 +112,7 @@
         gap: 10px;
         text-decoration: none;
         color: var(--med-dark);
+        min-width: 0;
     }
 
     .brand-cross {
@@ -228,8 +230,22 @@
 
     /* ========== MOBILE ========== */
     @media (max-width: 767.98px) {
+        .iibs-topbar {
+            padding: 0 12px;
+        }
+
+        .topbar-left {
+            gap: 8px;
+        }
+
+        .topbar-right {
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
         .sidebar-toggle {
             display: flex;
+            flex-shrink: 0;
         }
 
         .user-meta {
@@ -244,6 +260,24 @@
 
         .brand-text {
             font-size: 15px;
+            white-space: nowrap;
+        }
+
+        .brand-cross {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+        }
+
+        .btn-logout {
+            padding: 8px 9px;
+            border-radius: 10px;
+        }
+    }
+
+    @media (max-width: 360px) {
+        .brand-text {
+            display: none;
         }
     }
 </style>
